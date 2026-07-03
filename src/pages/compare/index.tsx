@@ -10,7 +10,7 @@ import './index.css'
 const MOCK_BEFORE = 'https://lf-coze-web-cdn.coze.cn/obj/eden-cn/lm-lgvj/ljhwZthlaukjlkulzlp/coze-coding/icon/coze-coding.gif'
 const MOCK_AFTER = 'https://lf-coze-web-cdn.coze.cn/obj/eden-cn/lm-lgvj/ljhwZthlaukjlkulzlp/coze-coding/icon/coze-coding.gif'
 
-const DEEP_PLUM = '#4A3B4E'
+const DEEP_PLUM = 'rgb(78, 18, 98)'
 const FOREGROUND_PURPLE = '#3D3A45'
 
 const ComparePage = () => {

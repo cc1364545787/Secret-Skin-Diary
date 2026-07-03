@@ -25,8 +25,8 @@ interface TaskItem {
   action?: () => void
 }
 
-const DEEP_PLUM = '#4A3B4E'
-const PRIMARY_PURPLE = '#9A8C98'
+const DEEP_PLUM = 'rgb(78, 18, 98)'
+const PRIMARY_PURPLE = 'rgb(210, 170, 204)'
 
 const IndexPage = () => {
   const [tasks, setTasks] = useState<TaskItem[]>([
@@ -80,7 +80,7 @@ const IndexPage = () => {
   return (
     <View className="min-h-screen bg-background">
       {/* 顶部状态栏 - 深紫渐变 */}
-      <View className="px-6 pt-8 pb-8 rounded-b-3xl" style={{ background: 'linear-gradient(135deg, #4A3B4E 0%, #9A8C98 100%)' }}>
+      <View className="px-6 pt-8 pb-8 rounded-b-3xl" style={{ background: 'linear-gradient(135deg, rgb(78, 18, 98) 0%, rgb(210, 170, 204) 100%)' }}>
         <View className="flex items-center gap-2 mb-3">
           <Sparkles size={18} color="#FFFFFF" />
           <Text className="block text-primary-foreground text-sm font-medium opacity-90">

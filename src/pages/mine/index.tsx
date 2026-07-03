@@ -21,8 +21,8 @@ const isPro = false
 const usedCapacity = 3
 const maxFreeCapacity = 5
 
-const DEEP_PLUM = '#4A3B4E'
-const PRIMARY_PURPLE = '#9A8C98'
+const DEEP_PLUM = 'rgb(78, 18, 98)'
+const PRIMARY_PURPLE = 'rgb(210, 170, 204)'
 const MUTED_PURPLE = '#8C8894'
 
 const MinePage = () => {
@@ -115,7 +115,7 @@ const MinePage = () => {
       {/* PRO 订阅墙 */}
       {!isPro && (
         <View className="px-6 mb-5">
-          <Card className="luxury-shadow border-0 rounded-2xl overflow-hidden" style={{ background: 'linear-gradient(135deg, rgba(154, 140, 152, 0.08) 0%, rgba(74, 59, 78, 0.04) 100%)', borderLeft: '3px solid #4A3B4E' }}>
+          <Card className="luxury-shadow border-0 rounded-2xl overflow-hidden" style={{ background: 'linear-gradient(135deg, rgba(154, 140, 152, 0.08) 0%, rgba(74, 59, 78, 0.04) 100%)', borderLeft: '3px solid rgb(78, 18, 98)' }}>
             <CardContent className="p-6">
               <View className="flex items-center gap-2 mb-4">
                 <Crown size={20} color={DEEP_PLUM} />

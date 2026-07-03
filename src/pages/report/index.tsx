@@ -41,8 +41,8 @@ interface MetricConfig {
   higher: boolean
 }
 
-const PRIMARY_PURPLE = '#9A8C98'
-const DEEP_PLUM = '#4A3B4E'
+const PRIMARY_PURPLE = 'rgb(210, 170, 204)'
+const DEEP_PLUM = 'rgb(78, 18, 98)'
 const MUTED_PURPLE = '#8C8894'
 const SOFT_ROSE = '#C4A0A0'
 

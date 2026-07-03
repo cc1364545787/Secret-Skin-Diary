@@ -10,8 +10,8 @@
 
 | 角色 | Tailwind 类名 | 色值 | 用途 |
 |------|--------------|------|------|
-| 主色 | `bg-primary` / `text-primary` | #9A8C98 (烟熏紫) | 按钮、激活态、关键标识 |
-| 强调色 | — | #4A3B4E (深李子紫) | 关键标题、强调按钮 |
+| 主色 | `bg-primary` / `text-primary` |rgb(210, 170, 204) (烟熏紫) | 按钮、激活态、关键标识 |
+| 强调色 | — | rgb(78, 18, 98)  (深李子紫) | 关键标题、强调按钮 |
 | 背景 | `bg-background` | #F7F5F8 (微紫灰) | 页面底色 |
 | 卡片 | `bg-card` | #FFFFFF | 卡片、浮层 |
 | 前景 | `text-foreground` | #3D3A45 (深石墨灰紫) | 主文字（严禁纯黑） |
@@ -28,7 +28,7 @@
 - 卡片标题：`text-base font-medium text-foreground`
 - 正文：`text-sm text-foreground`
 - 辅助说明：`text-xs text-muted-foreground`
-- 关键数据：`text-3xl font-bold`（颜色使用深李子紫 #4A3B4E）
+- 关键数据：`text-3xl font-bold`（颜色使用深李子紫 rgb(78, 18, 98)）
 - 天数/天数标记：`text-2xl font-bold text-primary`
 
 ## 间距系统（呼吸感设计）
