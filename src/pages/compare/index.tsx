@@ -10,6 +10,9 @@ import './index.css'
 const MOCK_BEFORE = 'https://lf-coze-web-cdn.coze.cn/obj/eden-cn/lm-lgvj/ljhwZthlaukjlkulzlp/coze-coding/icon/coze-coding.gif'
 const MOCK_AFTER = 'https://lf-coze-web-cdn.coze.cn/obj/eden-cn/lm-lgvj/ljhwZthlaukjlkulzlp/coze-coding/icon/coze-coding.gif'
 
+const DEEP_PLUM = '#4A3B4E'
+const FOREGROUND_PURPLE = '#3D3A45'
+
 const ComparePage = () => {
   const [sliderPosition, setSliderPosition] = useState(50)
   const [showPrivacyMask, setShowPrivacyMask] = useState(false)
@@ -48,9 +51,9 @@ const ComparePage = () => {
   }
 
   return (
-    <View className="min-h-screen bg-background pb-6">
+    <View className="min-h-screen bg-background pb-8">
       {/* 页面标题 */}
-      <View className="px-5 pt-4 pb-2">
+      <View className="px-6 pt-5 pb-3">
         <Text className="block text-xl font-semibold tracking-tight text-foreground">
           疗效对比
         </Text>
@@ -60,8 +63,8 @@ const ComparePage = () => {
       </View>
 
       {/* 对比区域 */}
-      <View className="px-5 mt-2">
-        <Card className="shadow-sm border border-border overflow-hidden">
+      <View className="px-6 mt-3">
+        <Card className="luxury-shadow border-0 rounded-2xl overflow-hidden">
           <CardContent className="p-0">
             <View
               id="compare-container"
@@ -79,12 +82,12 @@ const ComparePage = () => {
                   mode="aspectFill"
                 />
                 {showPrivacyMask && (
-                  <View className="absolute top-1/4 left-1/2 -translate-x-1/2 w-3/5 h-12 bg-black bg-opacity-60 rounded-full flex items-center justify-center">
-                    <Text className="text-xs text-white text-opacity-80">隐私保护</Text>
+                  <View className="absolute top-1/4 left-1/2 -translate-x-1/2 w-3/5 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(74, 59, 78, 0.65)' }}>
+                    <Text className="text-xs text-white text-opacity-90">隐私保护</Text>
                   </View>
                 )}
-                <View className="absolute bottom-3 right-3 bg-primary bg-opacity-80 rounded-full px-2 py-1">
-                  <Text className="text-xs text-primary-foreground">术后</Text>
+                <View className="absolute bottom-3 right-3 rounded-full px-3 py-1" style={{ backgroundColor: 'rgba(154, 140, 152, 0.85)' }}>
+                  <Text className="text-xs text-white">术后</Text>
                 </View>
               </View>
 
@@ -100,24 +103,30 @@ const ComparePage = () => {
                   mode="aspectFill"
                 />
                 {showPrivacyMask && (
-                  <View className="absolute top-1/4 left-1/2 -translate-x-1/2 w-3/5 h-12 bg-black bg-opacity-60 rounded-full flex items-center justify-center">
-                    <Text className="text-xs text-white text-opacity-80">隐私保护</Text>
+                  <View className="absolute top-1/4 left-1/2 -translate-x-1/2 w-3/5 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(74, 59, 78, 0.65)' }}>
+                    <Text className="text-xs text-white text-opacity-90">隐私保护</Text>
                   </View>
                 )}
-                <View className="absolute bottom-3 left-3 bg-foreground bg-opacity-60 rounded-full px-2 py-1">
-                  <Text className="text-xs text-background">术前</Text>
+                <View className="absolute bottom-3 left-3 rounded-full px-3 py-1" style={{ backgroundColor: 'rgba(61, 58, 69, 0.65)' }}>
+                  <Text className="text-xs text-white">术前</Text>
                 </View>
               </View>
 
-              {/* 分割线 */}
+              {/* 分割线 + 紫色光晕 */}
               <View
-                className="absolute top-0 bottom-0 w-1 bg-white shadow-md z-10"
-                style={{ left: `${sliderPosition}%`, transform: 'translateX(-50%)' }}
+                className="absolute top-0 bottom-0 z-10"
+                style={{
+                  left: `${sliderPosition}%`,
+                  transform: 'translateX(-50%)',
+                  width: '2px',
+                  backgroundColor: '#FFFFFF',
+                  boxShadow: '0 0 12px rgba(154, 140, 152, 0.4)'
+                }}
               >
                 {/* 拖拽手柄 */}
-                <View className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white shadow-md flex items-center justify-center">
-                  <ChevronLeft size={12} color="#2D3436" />
-                  <ChevronRight size={12} color="#2D3436" />
+                <View className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white flex items-center justify-center" style={{ boxShadow: '0 4px 16px rgba(74, 59, 78, 0.15)' }}>
+                  <ChevronLeft size={12} color={FOREGROUND_PURPLE} />
+                  <ChevronRight size={12} color={FOREGROUND_PURPLE} />
                 </View>
               </View>
             </View>
@@ -125,43 +134,44 @@ const ComparePage = () => {
         </Card>
       </View>
 
-      {/* 操作栏 */}
-      <View className="px-5 mt-4">
-        <View className="flex gap-3">
+      {/* 操作栏 - 胶囊按钮 */}
+      <View className="px-6 mt-5">
+        <View className="flex gap-4">
           <Button
             variant={showPrivacyMask ? 'default' : 'outline'}
-            className={`flex-1 rounded-lg ${
+            className={`flex-1 rounded-full py-5 ${
               showPrivacyMask
-                ? 'bg-primary text-primary-foreground'
-                : 'border-border text-foreground'
+                ? 'text-primary-foreground'
+                : 'border-secondary text-foreground'
             }`}
+            style={showPrivacyMask ? { backgroundColor: DEEP_PLUM } : undefined}
             onClick={() => setShowPrivacyMask(!showPrivacyMask)}
           >
             {showPrivacyMask ? (
               <Eye size={16} color="#FFFFFF" className="mr-2" />
             ) : (
-              <EyeOff size={16} color="#2D3436" className="mr-2" />
+              <EyeOff size={16} color={FOREGROUND_PURPLE} className="mr-2" />
             )}
             <Text>{showPrivacyMask ? '已开启隐私保护' : '隐私保护'}</Text>
           </Button>
           <Button
             variant="outline"
-            className="flex-1 rounded-lg border-border text-foreground"
+            className="flex-1 rounded-full border-secondary text-foreground py-5"
             onClick={handleSave}
           >
-            <Download size={16} color="#2D3436" className="mr-2" />
+            <Download size={16} color={FOREGROUND_PURPLE} className="mr-2" />
             <Text>保存对比图</Text>
           </Button>
         </View>
       </View>
 
       {/* 数据对比 */}
-      <View className="px-5 mt-4">
-        <Text className="block text-sm font-medium text-foreground mb-3">
+      <View className="px-6 mt-6">
+        <Text className="block text-sm font-semibold text-foreground mb-4">
           关键指标变化
         </Text>
-        <Card className="shadow-sm border border-border">
-          <CardContent className="p-4">
+        <Card className="luxury-shadow border-0 rounded-2xl">
+          <CardContent className="p-5">
             {[
               { label: '紧致度', before: 72, after: 88.5, unit: '分', better: 'up' },
               { label: '色斑面积', before: 18.5, after: 12.4, unit: 'mm²', better: 'down' },
@@ -170,18 +180,18 @@ const ComparePage = () => {
             ].map((item, i) => (
               <View key={item.label}>
                 <View className="flex items-center justify-between py-3">
-                  <Text className="text-sm text-foreground">{item.label}</Text>
+                  <Text className="text-sm text-foreground font-medium">{item.label}</Text>
                   <View className="flex items-center gap-3">
                     <Text className="text-sm text-muted-foreground">
                       {item.before}{item.unit}
                     </Text>
                     <Text className="text-xs text-muted-foreground">→</Text>
-                    <Text className="text-sm font-medium text-primary">
+                    <Text className="text-sm font-bold" style={{ color: DEEP_PLUM }}>
                       {item.after}{item.unit}
                     </Text>
                   </View>
                 </View>
-                {i < 3 && <Separator className="bg-border" />}
+                {i < 3 && <Separator style={{ backgroundColor: '#F0EDF2' }} />}
               </View>
             ))}
           </CardContent>
@@ -189,21 +199,21 @@ const ComparePage = () => {
       </View>
 
       {/* 历史记录 */}
-      <View className="px-5 mt-4">
-        <Text className="block text-sm font-medium text-foreground mb-3">
+      <View className="px-6 mt-6">
+        <Text className="block text-sm font-semibold text-foreground mb-4">
           历史对比记录
         </Text>
-        <View className="flex gap-2 overflow-x-auto">
+        <View className="flex gap-3 overflow-x-auto">
           {['Day 1 vs Day 3', 'Day 1 vs Day 7', 'Day 3 vs Day 7'].map((label, i) => (
             <Card
               key={i}
-              className="flex-shrink-0 shadow-sm border border-border cursor-pointer"
-              style={{ minWidth: '140px' }}
+              className="flex-shrink-0 luxury-shadow-sm border-0 rounded-2xl cursor-pointer"
+              style={{ minWidth: '150px' }}
             >
-              <CardContent className="p-3">
-                <View className="flex gap-1 mb-2">
-                  <View className="flex-1 h-12 rounded bg-secondary" />
-                  <View className="flex-1 h-12 rounded bg-primary bg-opacity-10" />
+              <CardContent className="p-4">
+                <View className="flex gap-2 mb-3">
+                  <View className="flex-1 h-12 rounded-xl bg-secondary" />
+                  <View className="flex-1 h-12 rounded-xl" style={{ backgroundColor: 'rgba(154, 140, 152, 0.1)' }} />
                 </View>
                 <Text className="block text-xs text-foreground font-medium">
                   {label}

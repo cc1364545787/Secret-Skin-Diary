@@ -25,6 +25,9 @@ interface TaskItem {
   action?: () => void
 }
 
+const DEEP_PLUM = '#4A3B4E'
+const PRIMARY_PURPLE = '#9A8C98'
+
 const IndexPage = () => {
   const [tasks, setTasks] = useState<TaskItem[]>([
     {
@@ -32,21 +35,21 @@ const IndexPage = () => {
       title: '拍摄今日皮肤照片',
       desc: '正脸 + 左右45°各一张',
       completed: false,
-      icon: <Camera size={20} color="#7C9A8E" />
+      icon: <Camera size={20} color={PRIMARY_PURPLE} />
     },
     {
       id: '2',
       title: '使用医用冷敷贴',
       desc: '术后修复黄金期，建议早晚各一次',
       completed: false,
-      icon: <Droplets size={20} color="#7C9A8E" />
+      icon: <Droplets size={20} color={PRIMARY_PURPLE} />
     },
     {
       id: '3',
       title: '严格物理防晒',
       desc: 'SPF50+ 防晒霜 + 遮阳帽',
       completed: false,
-      icon: <Sun size={20} color="#C4A265" />
+      icon: <Sun size={20} color={DEEP_PLUM} />
     }
   ])
 
@@ -76,21 +79,21 @@ const IndexPage = () => {
 
   return (
     <View className="min-h-screen bg-background">
-      {/* 顶部状态栏 */}
-      <View className="bg-primary px-5 pt-8 pb-6 rounded-b-2xl">
-        <View className="flex items-center gap-2 mb-2">
+      {/* 顶部状态栏 - 深紫渐变 */}
+      <View className="px-6 pt-8 pb-8 rounded-b-3xl" style={{ background: 'linear-gradient(135deg, #4A3B4E 0%, #9A8C98 100%)' }}>
+        <View className="flex items-center gap-2 mb-3">
           <Sparkles size={18} color="#FFFFFF" />
           <Text className="block text-primary-foreground text-sm font-medium opacity-90">
             护肤日志
           </Text>
         </View>
-        <Text className="block text-primary-foreground text-xl font-semibold mb-1">
+        <Text className="block text-primary-foreground text-2xl font-semibold mb-1">
           这是你「{projectName}」
         </Text>
-        <Text className="block text-primary-foreground text-xl font-semibold">
-          术后的第 {daysAfterProcedure} 天
+        <Text className="block text-primary-foreground text-2xl font-semibold">
+          术后的第 <Text className="font-bold" style={{ fontSize: '28px' }}>{daysAfterProcedure}</Text> 天
         </Text>
-        <View className="mt-4 bg-white bg-opacity-20 rounded-lg p-3">
+        <View className="mt-5 bg-white bg-opacity-15 rounded-2xl p-4">
           <View className="flex items-center justify-between mb-2">
             <Text className="block text-primary-foreground text-xs opacity-80">
               今日进度
@@ -99,7 +102,7 @@ const IndexPage = () => {
               {completedCount}/{tasks.length}
             </Text>
           </View>
-          <View className="w-full h-2 bg-white bg-opacity-20 rounded-full overflow-hidden">
+          <View className="w-full h-2 bg-white bg-opacity-15 rounded-full overflow-hidden">
             <View
               className="h-full bg-white rounded-full"
               style={{
@@ -112,26 +115,26 @@ const IndexPage = () => {
       </View>
 
       {/* 今日任务 */}
-      <View className="px-5 -mt-3">
-        <Card className="shadow-sm border border-border">
-          <CardContent className="p-4">
-            <View className="flex items-center justify-between mb-3">
-              <Text className="block text-foreground text-base font-medium">
+      <View className="px-6 -mt-4">
+        <Card className="luxury-shadow border-0 rounded-2xl">
+          <CardContent className="p-5">
+            <View className="flex items-center justify-between mb-4">
+              <Text className="block text-foreground text-base font-semibold">
                 今日任务
               </Text>
               <Badge
                 variant="secondary"
-                className="bg-secondary text-muted-foreground text-xs"
+                className="bg-secondary text-muted-foreground text-xs rounded-full px-3"
               >
                 {completedCount === tasks.length ? '已完成' : '进行中'}
               </Badge>
             </View>
 
-            <View className="space-y-3">
+            <View className="space-y-1">
               {tasks.map((task, index) => (
                 <View key={task.id}>
                   <View
-                    className="flex items-center gap-3 py-2"
+                    className="flex items-center gap-4 py-3"
                     onClick={() => {
                       if (task.id === '1') {
                         if (!task.completed) {
@@ -144,9 +147,9 @@ const IndexPage = () => {
                     }}
                   >
                     {task.completed ? (
-                      <CircleCheck size={22} color="#7C9A8E" />
+                      <CircleCheck size={22} color={PRIMARY_PURPLE} />
                     ) : (
-                      <Circle size={22} color="#E8E6E1" />
+                      <Circle size={22} color="#F0EDF2" />
                     )}
                     <View className="flex-1">
                       <Text
@@ -161,7 +164,7 @@ const IndexPage = () => {
                     {task.icon}
                   </View>
                   {index < tasks.length - 1 && (
-                    <Separator className="ml-10 bg-border" />
+                    <Separator style={{ marginLeft: '36px', backgroundColor: '#F0EDF2' }} />
                   )}
                 </View>
               ))}
@@ -171,18 +174,18 @@ const IndexPage = () => {
       </View>
 
       {/* 快捷入口 */}
-      <View className="px-5 mt-4">
-        <Text className="block text-foreground text-base font-medium mb-3">
+      <View className="px-6 mt-6">
+        <Text className="block text-foreground text-base font-semibold mb-4">
           快捷入口
         </Text>
-        <View className="flex gap-3">
+        <View className="flex gap-4">
           <Card
-            className="flex-1 shadow-sm border border-border cursor-pointer"
+            className="flex-1 luxury-shadow-sm border-0 rounded-2xl cursor-pointer"
             onClick={goToCompare}
           >
-            <CardContent className="p-4 flex flex-col items-center gap-2">
-              <View className="w-10 h-10 rounded-full bg-primary bg-opacity-10 flex items-center justify-center">
-                <Shield size={20} color="#7C9A8E" />
+            <CardContent className="p-5 flex flex-col items-center gap-3">
+              <View className="w-12 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(154, 140, 152, 0.1)' }}>
+                <Shield size={22} color={PRIMARY_PURPLE} />
               </View>
               <Text className="block text-sm font-medium text-foreground">
                 疗效对比
@@ -193,12 +196,12 @@ const IndexPage = () => {
             </CardContent>
           </Card>
           <Card
-            className="flex-1 shadow-sm border border-border cursor-pointer"
+            className="flex-1 luxury-shadow-sm border-0 rounded-2xl cursor-pointer"
             onClick={goToReport}
           >
-            <CardContent className="p-4 flex flex-col items-center gap-2">
-              <View className="w-10 h-10 rounded-full bg-amber-50 flex items-center justify-center">
-                <Sparkles size={20} color="#C4A265" />
+            <CardContent className="p-5 flex flex-col items-center gap-3">
+              <View className="w-12 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(74, 59, 78, 0.08)' }}>
+                <Sparkles size={22} color={DEEP_PLUM} />
               </View>
               <Text className="block text-sm font-medium text-foreground">
                 皮肤报告
@@ -211,29 +214,29 @@ const IndexPage = () => {
         </View>
       </View>
 
-      {/* 好物推荐 */}
-      <View className="px-5 mt-4 mb-6">
-        <Text className="block text-foreground text-base font-medium mb-3">
+      {/* 术后保养建议 */}
+      <View className="px-6 mt-6 mb-8">
+        <Text className="block text-foreground text-base font-semibold mb-4">
           术后黄金期保养建议
         </Text>
-        <Card className="shadow-sm border border-border bg-secondary bg-opacity-50">
-          <CardContent className="p-4">
-            <View className="flex items-start gap-3">
-              <View className="w-12 h-12 rounded-lg bg-primary bg-opacity-10 flex items-center justify-center flex-shrink-0">
-                <Droplets size={24} color="#7C9A8E" />
+        <Card className="luxury-shadow-sm border-0 rounded-2xl" style={{ background: 'linear-gradient(135deg, rgba(154, 140, 152, 0.06) 0%, rgba(74, 59, 78, 0.03) 100%)' }}>
+          <CardContent className="p-5">
+            <View className="flex items-start gap-4">
+              <View className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'rgba(154, 140, 152, 0.1)' }}>
+                <Droplets size={24} color={PRIMARY_PURPLE} />
               </View>
               <View className="flex-1">
-                <Text className="block text-sm font-medium text-foreground mb-1">
+                <Text className="block text-sm font-semibold text-foreground mb-1">
                   医用冷敷贴推荐
                 </Text>
                 <Text className="block text-xs text-muted-foreground leading-relaxed">
                   术后72小时内建议使用医用级冷敷贴，帮助镇静修复肌肤屏障，减少红肿不适。
                 </Text>
-                <View className="flex items-center justify-between mt-3">
-                  <Text className="block text-xs text-primary font-medium">
+                <View className="flex items-center justify-between mt-4">
+                  <Text className="block text-xs font-medium" style={{ color: DEEP_PLUM }}>
                     查看合规好物
                   </Text>
-                  <ChevronRight size={14} color="#7C9A8E" />
+                  <ChevronRight size={14} color={DEEP_PLUM} />
                 </View>
               </View>
             </View>
@@ -242,7 +245,7 @@ const IndexPage = () => {
       </View>
 
       {/* 底部安全区 */}
-      <View className="h-4" />
+      <View className="h-6" />
     </View>
   )
 }

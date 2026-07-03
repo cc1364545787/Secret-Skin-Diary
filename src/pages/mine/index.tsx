@@ -21,6 +21,10 @@ const isPro = false
 const usedCapacity = 3
 const maxFreeCapacity = 5
 
+const DEEP_PLUM = '#4A3B4E'
+const PRIMARY_PURPLE = '#9A8C98'
+const MUTED_PURPLE = '#8C8894'
+
 const MinePage = () => {
   const handleSubscribe = () => {
     Taro.showModal({
@@ -32,55 +36,55 @@ const MinePage = () => {
   }
 
   const menuItems = [
-    { icon: <Camera size={18} color="#636E72" />, label: '拍照设置', desc: '画质、角度引导' },
-    { icon: <ChartColumn size={18} color="#636E72" />, label: '数据管理', desc: '导出报告、清理缓存' },
-    { icon: <Shield size={18} color="#636E72" />, label: '隐私设置', desc: '照片加密、访问权限' },
-    { icon: <Settings size={18} color="#636E72" />, label: '通用设置', desc: '通知、主题、语言' },
-    { icon: <CircleQuestionMark size={18} color="#636E72" />, label: '帮助与反馈', desc: '常见问题、联系客服' }
+    { icon: <Camera size={18} color={MUTED_PURPLE} />, label: '拍照设置', desc: '画质、角度引导' },
+    { icon: <ChartColumn size={18} color={MUTED_PURPLE} />, label: '数据管理', desc: '导出报告、清理缓存' },
+    { icon: <Shield size={18} color={MUTED_PURPLE} />, label: '隐私设置', desc: '照片加密、访问权限' },
+    { icon: <Settings size={18} color={MUTED_PURPLE} />, label: '通用设置', desc: '通知、主题、语言' },
+    { icon: <CircleQuestionMark size={18} color={MUTED_PURPLE} />, label: '帮助与反馈', desc: '常见问题、联系客服' }
   ]
 
   return (
-    <View className="min-h-screen bg-background pb-6">
+    <View className="min-h-screen bg-background pb-8">
       {/* 用户卡片 */}
-      <View className="px-5 pt-6 pb-4">
-        <Card className="shadow-sm border border-border overflow-hidden">
-          <CardContent className="p-5">
+      <View className="px-6 pt-6 pb-4">
+        <Card className="luxury-shadow border-0 rounded-2xl overflow-hidden">
+          <CardContent className="p-6">
             <View className="flex items-center gap-4">
-              <View className={`w-14 h-14 rounded-full flex items-center justify-center ${isPro ? 'bg-amber-50' : 'bg-secondary'}`}>
+              <View className={`w-14 h-14 rounded-full flex items-center justify-center ${isPro ? '' : 'bg-secondary'}`} style={isPro ? { backgroundColor: 'rgba(74, 59, 78, 0.1)' } : undefined}>
                 {isPro ? (
-                  <Crown size={28} color="#C4A265" />
+                  <Crown size={28} color={DEEP_PLUM} />
                 ) : (
-                  <User size={28} color="#636E72" />
+                  <User size={28} color={MUTED_PURPLE} />
                 )}
               </View>
               <View className="flex-1">
                 <View className="flex items-center gap-2">
-                  <Text className="block text-base font-medium text-foreground">
+                  <Text className="block text-base font-semibold text-foreground">
                     护肤达人
                   </Text>
                   {isPro ? (
-                    <Badge className="bg-amber-50 text-amber-600 border-amber-200 text-xs">
-                      <Star size={10} color="#C4A265" className="mr-1" />
+                    <Badge className="text-xs rounded-full px-2" style={{ backgroundColor: 'rgba(74, 59, 78, 0.1)', color: DEEP_PLUM, border: '1px solid rgba(74, 59, 78, 0.15)' }}>
+                      <Star size={10} color={DEEP_PLUM} className="mr-1" />
                       PRO
                     </Badge>
                   ) : (
-                    <Badge variant="secondary" className="text-xs">
+                    <Badge variant="secondary" className="text-xs rounded-full px-2">
                       普通用户
                     </Badge>
                   )}
                 </View>
                 <Text className="block text-xs text-muted-foreground mt-1">
                   {isPro
-                    ? `PRO 会员有效期至 2027-07-03`
+                    ? 'PRO 会员有效期至 2027-07-03'
                     : '升级 PRO 解锁无限存储与高级分析'}
                 </Text>
               </View>
-              <ChevronRight size={18} color="#636E72" />
+              <ChevronRight size={18} color={MUTED_PURPLE} />
             </View>
 
             {/* 容量进度条 */}
             {!isPro && (
-              <View className="mt-4 pt-4" style={{ borderTop: '1px solid #E8E6E1' }}>
+              <View className="mt-5 pt-5" style={{ borderTop: '1px solid #F0EDF2' }}>
                 <View className="flex items-center justify-between mb-2">
                   <Text className="block text-xs text-muted-foreground">
                     已用容量
@@ -91,9 +95,10 @@ const MinePage = () => {
                 </View>
                 <View className="w-full h-2 bg-secondary rounded-full overflow-hidden">
                   <View
-                    className="h-full bg-primary rounded-full"
+                    className="h-full rounded-full"
                     style={{
                       width: `${(usedCapacity / maxFreeCapacity) * 100}%`,
+                      backgroundColor: PRIMARY_PURPLE,
                       transition: 'width 0.3s ease-out'
                     }}
                   />
@@ -109,32 +114,32 @@ const MinePage = () => {
 
       {/* PRO 订阅墙 */}
       {!isPro && (
-        <View className="px-5 mb-4">
-          <Card className="shadow-sm border-2 border-primary border-opacity-20 bg-gradient-to-br from-primary from-opacity-5 to-transparent">
-            <CardContent className="p-5">
-              <View className="flex items-center gap-2 mb-3">
-                <Crown size={20} color="#C4A265" />
-                <Text className="block text-base font-medium text-foreground">
+        <View className="px-6 mb-5">
+          <Card className="luxury-shadow border-0 rounded-2xl overflow-hidden" style={{ background: 'linear-gradient(135deg, rgba(154, 140, 152, 0.08) 0%, rgba(74, 59, 78, 0.04) 100%)', borderLeft: '3px solid #4A3B4E' }}>
+            <CardContent className="p-6">
+              <View className="flex items-center gap-2 mb-4">
+                <Crown size={20} color={DEEP_PLUM} />
+                <Text className="block text-base font-semibold text-foreground">
                   升级 PRO 尊享会员
                 </Text>
               </View>
-              <View className="space-y-2 mb-4">
+              <View className="space-y-3 mb-5">
                 {[
                   '无限照片存储容量',
                   'AI 智能皮肤分析',
                   '高清对比图导出',
                   '专属修复保养方案'
                 ].map(item => (
-                  <View key={item} className="flex items-center gap-2">
-                    <View className="w-1 h-1 rounded-full bg-primary" />
+                  <View key={item} className="flex items-center gap-3">
+                    <View className="w-2 h-2 rounded-full" style={{ backgroundColor: PRIMARY_PURPLE }} />
                     <Text className="text-sm text-muted-foreground">{item}</Text>
                   </View>
                 ))}
               </View>
-              <View className="flex gap-3">
+              <View className="flex gap-4">
                 <Button
                   variant="outline"
-                  className="flex-1 rounded-lg border-border text-foreground"
+                  className="flex-1 rounded-full border-secondary text-foreground py-5"
                   onClick={handleSubscribe}
                 >
                   <View className="flex flex-col items-center">
@@ -145,7 +150,8 @@ const MinePage = () => {
                   </View>
                 </Button>
                 <Button
-                  className="flex-1 rounded-lg bg-primary text-primary-foreground"
+                  className="flex-1 rounded-full text-primary-foreground py-5"
+                  style={{ backgroundColor: DEEP_PLUM }}
                   onClick={handleSubscribe}
                 >
                   <View className="flex flex-col items-center">
@@ -162,27 +168,27 @@ const MinePage = () => {
       )}
 
       {/* 功能菜单 */}
-      <View className="px-5">
-        <Card className="shadow-sm border border-border">
+      <View className="px-6">
+        <Card className="luxury-shadow border-0 rounded-2xl">
           <CardContent className="p-0">
             {menuItems.map((item, i) => (
               <View key={item.label}>
-                <View className="flex items-center gap-3 px-4 py-4">
-                  <View className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center">
+                <View className="flex items-center gap-4 px-5 py-4">
+                  <View className="w-9 h-9 rounded-xl bg-secondary flex items-center justify-center">
                     {item.icon}
                   </View>
                   <View className="flex-1">
                     <Text className="block text-sm font-medium text-foreground">
                       {item.label}
                     </Text>
-                    <Text className="block text-xs text-muted-foreground">
+                    <Text className="block text-xs text-muted-foreground mt-1">
                       {item.desc}
                     </Text>
                   </View>
-                  <ChevronRight size={16} color="#636E72" />
+                  <ChevronRight size={16} color={MUTED_PURPLE} />
                 </View>
                 {i < menuItems.length - 1 && (
-                  <Separator className="ml-16 bg-border" />
+                  <Separator style={{ marginLeft: '52px', backgroundColor: '#F0EDF2' }} />
                 )}
               </View>
             ))}

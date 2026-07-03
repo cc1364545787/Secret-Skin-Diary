@@ -8,13 +8,13 @@ export default defineAppConfig({
   ],
   window: {
     backgroundTextStyle: 'light',
-    navigationBarBackgroundColor: '#F8F7F4',
+    navigationBarBackgroundColor: '#F7F5F8',
     navigationBarTitleText: '肌秘日志',
     navigationBarTextStyle: 'black'
   },
   tabBar: {
-    color: '#636E72',
-    selectedColor: '#7C9A8E',
+    color: '#8C8894',
+    selectedColor: '#9A8C98',
     backgroundColor: '#FFFFFF',
     borderStyle: 'white',
     list: [

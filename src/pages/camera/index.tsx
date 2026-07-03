@@ -21,6 +21,10 @@ const ANGLES: AngleInfo[] = [
 
 const isMiniApp = [Taro.ENV_TYPE.WEAPP, Taro.ENV_TYPE.TT].includes(Taro.getEnv() as any)
 
+const PRIMARY_PURPLE = '#9A8C98'
+const DEEP_PLUM = '#4A3B4E'
+const MUTED_PURPLE = '#8C8894'
+
 const CameraPage = () => {
   const [currentAngle, setCurrentAngle] = useState<Angle>('front')
   const [capturedImages, setCapturedImages] = useState<Record<string, string>>({})
@@ -104,9 +108,9 @@ const CameraPage = () => {
     switch (lightStatus) {
       case 'dark':
       case 'bright':
-        return '#E8A0A0'
+        return '#D4A0A0'
       default:
-        return '#7C9A8E'
+        return PRIMARY_PURPLE
     }
   }
 
@@ -125,7 +129,7 @@ const CameraPage = () => {
         ) : (
           <View className="w-full h-full bg-secondary flex items-center justify-center">
             <View className="flex flex-col items-center gap-3">
-              <CameraIcon size={48} color="#636E72" />
+              <CameraIcon size={48} color={MUTED_PURPLE} />
               <Text className="block text-muted-foreground text-sm text-center">
                 相机功能仅在小程序中可用{'\n'}请在小程序中打开体验完整功能
               </Text>
@@ -152,8 +156,8 @@ const CameraPage = () => {
 
         {/* 光线检测提示 */}
         <View
-          className="absolute top-4 left-4 right-4 flex items-center gap-2 px-3 py-2 rounded-lg"
-          style={{ backgroundColor: `${getLightColor()}20` }}
+          className="absolute top-4 left-4 right-4 flex items-center gap-2 px-4 py-2 rounded-2xl"
+          style={{ backgroundColor: `${getLightColor()}15` }}
         >
           {lightStatus === 'good' ? (
             <CircleCheck size={16} color={getLightColor()} />
@@ -167,16 +171,19 @@ const CameraPage = () => {
       </View>
 
       {/* 角度切换 */}
-      <View className="px-5 py-4">
-        <View className="flex gap-2">
+      <View className="px-6 py-5">
+        <View className="flex gap-3">
           {ANGLES.map(angle => (
             <View
               key={angle.key}
-              className={`flex-1 rounded-lg p-3 text-center transition-all ${
+              className={`flex-1 rounded-2xl p-4 text-center transition-all ${
                 currentAngle === angle.key
-                  ? 'bg-primary text-primary-foreground'
+                  ? 'text-primary-foreground'
                   : 'bg-secondary text-foreground'
               }`}
+              style={{
+                backgroundColor: currentAngle === angle.key ? PRIMARY_PURPLE : undefined
+              }}
               onClick={() => setCurrentAngle(angle.key)}
             >
               <Text
@@ -200,7 +207,7 @@ const CameraPage = () => {
               {capturedImages[angle.key] && (
                 <CircleCheck
                   size={14}
-                  color={currentAngle === angle.key ? '#FFFFFF' : '#7C9A8E'}
+                  color={currentAngle === angle.key ? '#FFFFFF' : PRIMARY_PURPLE}
                   className="mt-1 self-center"
                 />
               )}
@@ -211,15 +218,15 @@ const CameraPage = () => {
 
       {/* 已拍预览 */}
       {Object.keys(capturedImages).length > 0 && (
-        <View className="px-5 mb-4">
-          <Text className="block text-sm font-medium text-foreground mb-2">
+        <View className="px-6 mb-5">
+          <Text className="block text-sm font-semibold text-foreground mb-3">
             已拍摄 ({Object.keys(capturedImages).length}/3)
           </Text>
-          <View className="flex gap-2">
+          <View className="flex gap-3">
             {ANGLES.map(angle => (
               <View
                 key={angle.key}
-                className="flex-1 aspect-square rounded-lg overflow-hidden bg-secondary"
+                className="flex-1 aspect-square rounded-2xl overflow-hidden bg-secondary"
               >
                 {capturedImages[angle.key] ? (
                   <Image
@@ -240,34 +247,27 @@ const CameraPage = () => {
         </View>
       )}
 
-      {/* 操作按钮 */}
-      <View className="px-5 mt-auto pb-8">
-        <View className="flex gap-3">
+      {/* 操作按钮 - 胶囊形 */}
+      <View className="px-6 mt-auto pb-8">
+        <View className="flex gap-4">
           <Button
             variant="outline"
-            className="flex-1 rounded-lg border-border text-foreground"
+            className="flex-1 rounded-full border-secondary text-foreground py-5"
             onClick={handleCapture}
             disabled={isCapturing}
           >
-            <RefreshCw size={16} color="#2D3436" className="mr-2" />
-            <Text>重拍当前</Text>
+            <RefreshCw size={16} color={MUTED_PURPLE} className="mr-2" />
+            <Text>{isCapturing ? '拍摄中...' : '拍照'}</Text>
           </Button>
           <Button
-            className="flex-1 rounded-lg bg-primary text-primary-foreground"
-            onClick={handleCapture}
-            disabled={isCapturing}
+            className="flex-1 rounded-full text-primary-foreground py-5"
+            style={{ backgroundColor: DEEP_PLUM }}
+            onClick={handleComplete}
           >
-            <CameraIcon size={16} color="#FFFFFF" className="mr-2" />
-            <Text>拍摄{ANGLES.find(a => a.key === currentAngle)?.label}</Text>
+            <CircleCheck size={16} color="#FFFFFF" className="mr-2" />
+            <Text>完成打卡</Text>
           </Button>
         </View>
-        <Button
-          variant="ghost"
-          className="w-full mt-3 text-muted-foreground rounded-lg"
-          onClick={handleComplete}
-        >
-          {Object.keys(capturedImages).length >= 3 ? '完成打卡' : '跳过，稍后补拍'}
-        </Button>
       </View>
     </View>
   )

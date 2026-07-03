@@ -41,11 +41,16 @@ interface MetricConfig {
   higher: boolean
 }
 
+const PRIMARY_PURPLE = '#9A8C98'
+const DEEP_PLUM = '#4A3B4E'
+const MUTED_PURPLE = '#8C8894'
+const SOFT_ROSE = '#C4A0A0'
+
 const METRICS: MetricConfig[] = [
-  { key: 'firmness', label: '紧致度', unit: '分', color: '#7C9A8E', higher: true },
-  { key: 'pigmentArea', label: '色斑面积', unit: 'mm²', color: '#C4A265', higher: false },
-  { key: 'acneCount', label: '红肿痘痘', unit: '个', color: '#E8A0A0', higher: false },
-  { key: 'wrinkleScore', label: '细纹评分', unit: '分', color: '#636E72', higher: true }
+  { key: 'firmness', label: '紧致度', unit: '分', color: PRIMARY_PURPLE, higher: true },
+  { key: 'pigmentArea', label: '色斑面积', unit: 'mm²', color: DEEP_PLUM, higher: false },
+  { key: 'acneCount', label: '红肿痘痘', unit: '个', color: SOFT_ROSE, higher: false },
+  { key: 'wrinkleScore', label: '细纹评分', unit: '分', color: MUTED_PURPLE, higher: true }
 ]
 
 const ReportPage = () => {
@@ -74,18 +79,18 @@ const ReportPage = () => {
   }, [filteredData, activeMetric])
 
   const getTrendIcon = () => {
-    if (Math.abs(diff) < 0.1) return <Minus size={14} color="#636E72" />
+    if (Math.abs(diff) < 0.1) return <Minus size={14} color={MUTED_PURPLE} />
     if (currentMetric.higher) {
       return diff > 0 ? (
-        <TrendingUp size={14} color="#7C9A8E" />
+        <TrendingUp size={14} color={PRIMARY_PURPLE} />
       ) : (
-        <TrendingDown size={14} color="#E8A0A0" />
+        <TrendingDown size={14} color={SOFT_ROSE} />
       )
     }
     return diff < 0 ? (
-      <TrendingDown size={14} color="#7C9A8E" />
+      <TrendingDown size={14} color={PRIMARY_PURPLE} />
     ) : (
-      <TrendingUp size={14} color="#E8A0A0" />
+      <TrendingUp size={14} color={SOFT_ROSE} />
     )
   }
 
@@ -93,18 +98,28 @@ const ReportPage = () => {
   const chartWidth = '100%'
 
   return (
-    <View className="min-h-screen bg-background pb-6">
+    <View className="min-h-screen bg-background pb-8">
+      {/* 页面标题 */}
+      <View className="px-6 pt-5 pb-3">
+        <Text className="block text-xl font-semibold tracking-tight text-foreground">
+          皮肤报告
+        </Text>
+        <Text className="block text-sm text-muted-foreground mt-1">
+          追踪各项指标的量化趋势
+        </Text>
+      </View>
+
       {/* 时间范围切换 */}
-      <View className="px-5 pt-4 pb-2">
+      <View className="px-6 pb-2">
         <Tabs defaultValue="7" onValueChange={(v) => setTimeRange(v as TimeRange)}>
-          <TabsList className="bg-secondary rounded-lg p-1">
-            <TabsTrigger value="7" className="rounded-md text-sm data-[state=active]:bg-card data-[state=active]:text-foreground data-[state=active]:shadow-sm">
+          <TabsList className="bg-secondary rounded-full p-1">
+            <TabsTrigger value="7" className="rounded-full text-sm data-[state=active]:bg-card data-[state=active]:text-foreground data-[state=active]:luxury-shadow-sm">
               7天
             </TabsTrigger>
-            <TabsTrigger value="30" className="rounded-md text-sm data-[state=active]:bg-card data-[state=active]:text-foreground data-[state=active]:shadow-sm">
+            <TabsTrigger value="30" className="rounded-full text-sm data-[state=active]:bg-card data-[state=active]:text-foreground data-[state=active]:luxury-shadow-sm">
               30天
             </TabsTrigger>
-            <TabsTrigger value="90" className="rounded-md text-sm data-[state=active]:bg-card data-[state=active]:text-foreground data-[state=active]:shadow-sm">
+            <TabsTrigger value="90" className="rounded-full text-sm data-[state=active]:bg-card data-[state=active]:text-foreground data-[state=active]:luxury-shadow-sm">
               90天
             </TabsTrigger>
           </TabsList>
@@ -112,10 +127,10 @@ const ReportPage = () => {
       </View>
 
       {/* 核心指标卡片 */}
-      <View className="px-5 mt-2">
-        <Card className="shadow-sm border border-border">
-          <CardContent className="p-5">
-            <View className="flex items-center justify-between mb-1">
+      <View className="px-6 mt-3">
+        <Card className="luxury-shadow border-0 rounded-2xl">
+          <CardContent className="p-6">
+            <View className="flex items-center justify-between mb-2">
               <Text className="block text-sm text-muted-foreground">
                 {currentMetric.label}
               </Text>
@@ -124,15 +139,15 @@ const ReportPage = () => {
                 <Text
                   className="text-xs font-medium"
                   style={{
-                    color: Math.abs(diff) < 0.1 ? '#636E72' : diff > 0 ? '#7C9A8E' : '#E8A0A0'
+                    color: Math.abs(diff) < 0.1 ? MUTED_PURPLE : diff > 0 ? PRIMARY_PURPLE : SOFT_ROSE
                   }}
                 >
                   {diff > 0 ? '+' : ''}{diff.toFixed(1)}
                 </Text>
               </View>
             </View>
-            <View className="flex items-baseline gap-1">
-              <Text className="text-3xl font-light text-foreground">
+            <View className="flex items-baseline gap-2">
+              <Text className="text-4xl font-bold" style={{ color: DEEP_PLUM }}>
                 {latestValue.toFixed(1)}
               </Text>
               <Text className="text-sm text-muted-foreground">
@@ -140,14 +155,14 @@ const ReportPage = () => {
               </Text>
             </View>
 
-            {/* 简易折线图 */}
-            <View className="mt-4 relative" style={{ height: `${chartHeight}px`, width: chartWidth }}>
+            {/* 折线图 */}
+            <View className="mt-6 relative" style={{ height: `${chartHeight}px`, width: chartWidth }}>
               {/* Y轴参考线 */}
               {[0, 0.25, 0.5, 0.75, 1].map((ratio, i) => (
                 <View
                   key={i}
-                  className="absolute left-0 right-0 border-t border-dashed border-border border-opacity-50"
-                  style={{ bottom: `${ratio * 100}%` }}
+                  className="absolute left-0 right-0"
+                  style={{ bottom: `${ratio * 100}%`, borderTop: '1px dashed #F0EDF2' }}
                 />
               ))}
               {/* 折线 */}
@@ -195,13 +210,13 @@ const ReportPage = () => {
                     .join(' ') +
                     ` L ${(chartData.length - 1) / (chartData.length - 1) * chartData.length * 40} ${chartHeight} L 0 ${chartHeight} Z`}
                   fill={currentMetric.color}
-                  fillOpacity="0.08"
+                  fillOpacity="0.06"
                 />
               </svg>
             </View>
 
             {/* X轴日期 */}
-            <View className="flex justify-between mt-2">
+            <View className="flex justify-between mt-3">
               {filteredData
                 .filter((_, i) => i % Math.ceil(filteredData.length / 5) === 0 || i === filteredData.length - 1)
                 .map(d => (
@@ -215,24 +230,25 @@ const ReportPage = () => {
       </View>
 
       {/* 指标选择 */}
-      <View className="px-5 mt-4">
-        <Text className="block text-sm font-medium text-foreground mb-3">
+      <View className="px-6 mt-6">
+        <Text className="block text-sm font-semibold text-foreground mb-4">
           切换指标
         </Text>
-        <View className="grid grid-cols-2 gap-3">
+        <View className="grid grid-cols-2 gap-4">
           {METRICS.map(metric => {
             const val = filteredData[filteredData.length - 1]?.[metric.key] ?? 0
             const isActive = activeMetric === metric.key
             return (
               <Card
                 key={metric.key}
-                className={`shadow-sm cursor-pointer transition-all ${
-                  isActive ? 'border-primary border-2' : 'border-border'
+                className={`cursor-pointer transition-all rounded-2xl ${
+                  isActive ? 'luxury-shadow border-0' : 'luxury-shadow-sm border-0'
                 }`}
+                style={isActive ? { borderLeft: `3px solid ${metric.color}` } : undefined}
                 onClick={() => setActiveMetric(metric.key)}
               >
-                <CardContent className="p-3">
-                  <View className="flex items-center gap-2 mb-1">
+                <CardContent className="p-4">
+                  <View className="flex items-center gap-2 mb-2">
                     {metric.key === 'firmness' && <Zap size={14} color={metric.color} />}
                     {metric.key === 'pigmentArea' && <Droplets size={14} color={metric.color} />}
                     {metric.key === 'wrinkleScore' && <TrendingUp size={14} color={metric.color} />}
@@ -241,7 +257,7 @@ const ReportPage = () => {
                     </Text>
                   </View>
                   <View className="flex items-baseline gap-1">
-                    <Text className="text-xl font-light text-foreground">
+                    <Text className="text-2xl font-bold" style={{ color: isActive ? DEEP_PLUM : undefined }}>
                       {val.toFixed(1)}
                     </Text>
                     <Text className="text-xs text-muted-foreground">
@@ -256,10 +272,10 @@ const ReportPage = () => {
       </View>
 
       {/* 智能分析建议 */}
-      <View className="px-5 mt-4">
-        <Card className="shadow-sm border border-border bg-secondary bg-opacity-30">
-          <CardContent className="p-4">
-            <Text className="block text-sm font-medium text-foreground mb-2">
+      <View className="px-6 mt-6">
+        <Card className="luxury-shadow-sm border-0 rounded-2xl" style={{ background: 'linear-gradient(135deg, rgba(154, 140, 152, 0.06) 0%, rgba(74, 59, 78, 0.03) 100%)' }}>
+          <CardContent className="p-5">
+            <Text className="block text-sm font-semibold text-foreground mb-3">
               智能分析建议
             </Text>
             <Text className="block text-xs text-muted-foreground leading-relaxed">
