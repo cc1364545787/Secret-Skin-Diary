@@ -1,3 +1,74 @@
+## 项目概述
+
+**肌秘日志 (Skin Journal)** — 护肤追踪小程序，支持皮肤状态记录、报告生成、前后对比分析。基于 Taro 4 跨端框架，同时输出 H5 和微信小程序，后端使用 NestJS 提供 API 服务。
+
+## 技术栈
+
+- **前端框架**: Taro 4.1.9 + React 18 + TypeScript 5.4
+- **样式**: Tailwind CSS 4 + weapp-tailwindcss 跨端适配
+- **状态管理**: Zustand 5
+- **图标**: lucide-react-taro
+- **组件库**: Taro 版 shadcn/ui (`@/components/ui`)
+- **后端**: NestJS 10 + Drizzle ORM + PostgreSQL
+- **构建工具**: Vite 4 (Taro 内置)
+- **包管理**: pnpm 9
+- **运行时**: Node.js 24
+
+## 目录结构
+
+```
+├── scripts/                  # Coze 预览/部署包装脚本
+├── .cozeproj/scripts/        # 平台原始构建脚本（保留）
+├── config/                   # Taro 构建配置 (index.ts, dev.ts, prod.ts)
+├── server/                   # NestJS 后端服务
+│   └── src/                  # 后端源码
+├── src/                      # 前端源码
+│   ├── pages/                # 页面 (index, report, compare, mine, camera)
+│   ├── components/ui/        # shadcn/ui 组件库
+│   ├── presets/              # 框架预置逻辑
+│   ├── network.ts            # 网络请求封装
+│   ├── app.tsx               # 应用入口
+│   └── app.config.ts         # 应用配置 (TabBar、页面路由)
+├── types/                    # TypeScript 类型定义
+└── key/                      # 小程序密钥 (CI 上传用)
+```
+
+## 关键入口 / 核心模块
+
+- **前端入口**: `src/app.tsx` → `src/pages/` (5 个页面，4 个 TabBar 页)
+- **后端入口**: `server/src/main.ts` → 监听 3000 端口，全局前缀 `/api`
+- **Taro 配置**: `config/index.ts` (H5 devServer 固定 0.0.0.0:5000，proxy /api → localhost:3000)
+- **网络请求**: `src/network.ts` (封装 Taro.request，自动拼接 PROJECT_DOMAIN)
+- **设计稿**: `DESIGN.md` (配色、排版、动效规范)
+
+## 运行与预览
+
+- **预览链路**: Taro H5 dev server (Vite) + NestJS 后端，通过 `pnpm dev` 同时启动
+- **预览端口**: H5 → 5000 (config/index.ts 已配置)，NestJS → 3000
+- **预览脚本**: `scripts/coze-preview-build.sh` (安装依赖) + `scripts/coze-preview-run.sh` (启动服务)
+- **部署脚本**: `scripts/coze-deploy-build.sh` (全量构建) + `scripts/coze-deploy-run.sh` (启动 NestJS)
+- **部署说明**: 部署仅启动 NestJS API 服务；H5 前端仅用于预览，不随部署启动
+
+## 用户偏好与长期约束
+
+- 包管理器必须使用 pnpm，禁止 npm/yarn
+- 图片/视频资源必须通过 TOS 对象存储，禁止打包到项目中 (TabBar 图标除外)
+- 样式优先使用 Tailwind，禁止硬编码 px 任意值
+- 通用 UI 组件优先使用 `@/components/ui`，禁止用 View/Text 手搓
+- 网络请求必须使用 `@/network` 封装，禁止直接 Taro.request
+- 图标使用 lucide-react-taro，通过 color/size/strokeWidth 属性控制样式
+- Git 提交遵循 Conventional Commits 规范
+
+## 常见问题和预防
+
+- **H5 端 Input 样式失效**: Taro Input 在 H5 是 inline 元素，必须用 View 包裹
+- **Fixed + Flex 在 H5 失效**: 必须使用 inline style 而非 Tailwind
+- **lucide 图标 className 不改变颜色**: className 只作用于 Image 布局，颜色需用 color 属性
+- **跨端平台检测**: 直接 `Taro.getEnv() === Taro.ENV_TYPE.WEAPP`，禁止 useState + useEffect
+- **Text 换行白屏**: 垂直排列的 Text 必须添加 `block` 类
+
+---
+
 # 开发规范 (CRITICAL)
 
 ## 包管理器
