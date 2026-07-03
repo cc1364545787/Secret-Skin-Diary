@@ -25,6 +25,9 @@
 ├── src/                      # 前端源码
 │   ├── pages/                # 页面 (index, report, compare, mine, camera)
 │   ├── components/ui/        # shadcn/ui 组件库
+│   ├── components/project-selector.tsx  # 项目选择器（胶囊 + Drawer）
+│   ├── store/                # Zustand 全局状态 (useProjectStore)
+│   ├── config/               # 项目映射字典 (projectMapping.ts) + Mock 数据 (mockData.ts)
 │   ├── presets/              # 框架预置逻辑
 │   ├── network.ts            # 网络请求封装
 │   ├── app.tsx               # 应用入口
@@ -39,7 +42,19 @@
 - **后端入口**: `server/src/main.ts` → 监听 3000 端口，全局前缀 `/api`
 - **Taro 配置**: `config/index.ts` (H5 devServer 固定 0.0.0.0:5000，proxy /api → localhost:3000)
 - **网络请求**: `src/network.ts` (封装 Taro.request，自动拼接 PROJECT_DOMAIN)
+- **全局状态**: `src/store/useProjectStore.ts` (Zustand，管理当前护肤项目选择，持久化到 Taro.setStorageSync)
+- **项目映射**: `src/config/projectMapping.ts` (集中维护所有项目的分类、任务、建议、追踪指标等配置字典)
+- **Mock 数据**: `src/config/mockData.ts` (报告页时序数据、对比页前后数据，按指标 key 组织)
+- **项目选择器**: `src/components/project-selector.tsx` (胶囊按钮 + Drawer 抽屉，支持预设选择和自定义输入)
 - **设计稿**: `DESIGN.md` (配色、排版、动效规范)
+
+### 全局状态联动架构
+
+`useProjectStore` 管理 `currentProject`（默认「超光子」），通过 `getProjectConfig()` 从 `projectMapping.ts` 获取对应配置。以下页面数据均随项目切换动态变化：
+
+- **首页**: 今日任务 (tasks)、术后保养建议 (suggestion)
+- **报告页**: 追踪指标维度 (metrics)、趋势图表数据
+- **对比页**: 关键指标变化 (before/after 对比)
 
 ## 运行与预览
 

@@ -1,35 +1,64 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useMemo } from 'react'
 import { View, Text, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Download, Eye, EyeOff, ChevronLeft, ChevronRight } from 'lucide-react-taro'
+import { useProjectStore } from '@/store/useProjectStore'
+import { getProjectConfig } from '@/config/projectMapping'
+import { COMPARE_MOCK_DATA } from '@/config/mockData'
 import './index.css'
 
-const MOCK_BEFORE = 'https://lf-coze-web-cdn.coze.cn/obj/eden-cn/lm-lgvj/ljhwZthlaukjlkulzlp/coze-coding/icon/coze-coding.gif'
-const MOCK_AFTER = 'https://lf-coze-web-cdn.coze.cn/obj/eden-cn/lm-lgvj/ljhwZthlaukjlkulzlp/coze-coding/icon/coze-coding.gif'
+const MOCK_BEFORE =
+  'https://lf-coze-web-cdn.coze.cn/obj/eden-cn/lm-lgvj/ljhwZthlaukjlkulzlp/coze-coding/icon/coze-coding.gif'
+const MOCK_AFTER =
+  'https://lf-coze-web-cdn.coze.cn/obj/eden-cn/lm-lgvj/ljhwZthlaukjlkulzlp/coze-coding/icon/coze-coding.gif'
 
 const DEEP_PLUM = 'rgb(78, 18, 98)'
 const FOREGROUND_PURPLE = '#3D3A45'
 
 const ComparePage = () => {
+  const currentProject = useProjectStore((s) => s.currentProject)
+  const config = useMemo(() => getProjectConfig(currentProject), [currentProject])
+
   const [sliderPosition, setSliderPosition] = useState(50)
   const [showPrivacyMask, setShowPrivacyMask] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
-  const containerRef = useRef<any>(null)
+  const containerRef = useRef<any>(null) // eslint-disable-line @typescript-eslint/no-explicit-any
+
+  // 根据当前项目配置动态生成关键指标对比数据
+  const compareItems = useMemo(() => {
+    return config.metrics.map((m) => {
+      const mock = COMPARE_MOCK_DATA[m.key]
+      return {
+        label: m.label,
+        before: mock?.before ?? 0,
+        after: mock?.after ?? 0,
+        unit: m.unit,
+        better: m.higher
+          ? (mock?.after ?? 0) >= (mock?.before ?? 0)
+            ? 'up'
+            : 'down'
+          : (mock?.after ?? 0) <= (mock?.before ?? 0)
+            ? 'down'
+            : 'up',
+      }
+    })
+  }, [config.metrics])
+
   const handleTouchStart = () => {
     setIsDragging(true)
   }
 
-  const handleTouchMove = (e: any) => {
+  const handleTouchMove = (e: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
     if (!isDragging && e.type !== 'touchstart') return
     const touch = e.touches?.[0] || e.changedTouches?.[0]
     if (!touch || !containerRef.current) return
 
     const query = Taro.createSelectorQuery()
     query.select('#compare-container').boundingClientRect()
-    query.exec((res: any) => {
+    query.exec((res: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
       if (res && res[0]) {
         const { left, width } = res[0]
         const x = touch.clientX - left
@@ -58,7 +87,7 @@ const ComparePage = () => {
           疗效对比
         </Text>
         <Text className="block text-sm text-muted-foreground mt-1">
-          拖动滑块查看术前术后变化
+          {config.name} — 拖动滑块查看术前术后变化
         </Text>
       </View>
 
@@ -76,17 +105,24 @@ const ComparePage = () => {
             >
               {/* 底层：术后照片 */}
               <View className="absolute inset-0">
-                <Image
-                  src={MOCK_AFTER}
-                  className="w-full h-full"
-                  mode="aspectFill"
-                />
+                <Image src={MOCK_AFTER} className="w-full h-full" mode="aspectFill" />
                 {showPrivacyMask && (
-                  <View className="absolute top-1/4 left-1/2 -translate-x-1/2 w-3/5 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(74, 59, 78, 0.65)' }}>
+                  <View
+                    className="absolute w-3/5 h-12 rounded-full flex items-center justify-center"
+                    style={{
+                      top: '25%',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      backgroundColor: 'rgba(74, 59, 78, 0.65)',
+                    }}
+                  >
                     <Text className="text-xs text-white text-opacity-90">隐私保护</Text>
                   </View>
                 )}
-                <View className="absolute bottom-3 right-3 rounded-full px-3 py-1" style={{ backgroundColor: 'rgba(154, 140, 152, 0.85)' }}>
+                <View
+                  className="absolute bottom-3 right-3 rounded-full px-3 py-1"
+                  style={{ backgroundColor: 'rgba(154, 140, 152, 0.85)' }}
+                >
                   <Text className="text-xs text-white">术后</Text>
                 </View>
               </View>
@@ -103,11 +139,22 @@ const ComparePage = () => {
                   mode="aspectFill"
                 />
                 {showPrivacyMask && (
-                  <View className="absolute top-1/4 left-1/2 -translate-x-1/2 w-3/5 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(74, 59, 78, 0.65)' }}>
+                  <View
+                    className="absolute w-3/5 h-12 rounded-full flex items-center justify-center"
+                    style={{
+                      top: '25%',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      backgroundColor: 'rgba(74, 59, 78, 0.65)',
+                    }}
+                  >
                     <Text className="text-xs text-white text-opacity-90">隐私保护</Text>
                   </View>
                 )}
-                <View className="absolute bottom-3 left-3 rounded-full px-3 py-1" style={{ backgroundColor: 'rgba(61, 58, 69, 0.65)' }}>
+                <View
+                  className="absolute bottom-3 left-3 rounded-full px-3 py-1"
+                  style={{ backgroundColor: 'rgba(61, 58, 69, 0.65)' }}
+                >
                   <Text className="text-xs text-white">术前</Text>
                 </View>
               </View>
@@ -120,11 +167,19 @@ const ComparePage = () => {
                   transform: 'translateX(-50%)',
                   width: '2px',
                   backgroundColor: '#FFFFFF',
-                  boxShadow: '0 0 12px rgba(154, 140, 152, 0.4)'
+                  boxShadow: '0 0 12px rgba(154, 140, 152, 0.4)',
                 }}
               >
                 {/* 拖拽手柄 */}
-                <View className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white flex items-center justify-center" style={{ boxShadow: '0 4px 16px rgba(74, 59, 78, 0.15)' }}>
+                <View
+                  className="absolute w-8 h-8 rounded-full bg-white flex items-center justify-center"
+                  style={{
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    boxShadow: '0 4px 16px rgba(74, 59, 78, 0.15)',
+                  }}
+                >
                   <ChevronLeft size={12} color={FOREGROUND_PURPLE} />
                   <ChevronRight size={12} color={FOREGROUND_PURPLE} />
                 </View>
@@ -134,7 +189,7 @@ const ComparePage = () => {
         </Card>
       </View>
 
-      {/* 操作栏 - 胶囊按钮 */}
+      {/* 操作栏 */}
       <View className="px-6 mt-5">
         <View className="flex gap-4">
           <Button
@@ -165,33 +220,37 @@ const ComparePage = () => {
         </View>
       </View>
 
-      {/* 数据对比 */}
+      {/* 数据对比 - 动态化 */}
       <View className="px-6 mt-6">
         <Text className="block text-sm font-semibold text-foreground mb-4">
           关键指标变化
         </Text>
         <Card className="luxury-shadow border-0 rounded-2xl">
           <CardContent className="p-5">
-            {[
-              { label: '紧致度', before: 72, after: 88.5, unit: '分', better: 'up' },
-              { label: '色斑面积', before: 18.5, after: 12.4, unit: 'mm²', better: 'down' },
-              { label: '红肿痘痘', before: 5, after: 2, unit: '个', better: 'down' },
-              { label: '细纹评分', before: 78, after: 91, unit: '分', better: 'up' }
-            ].map((item, i) => (
+            {compareItems.map((item, i) => (
               <View key={item.label}>
                 <View className="flex items-center justify-between py-3">
-                  <Text className="text-sm text-foreground font-medium">{item.label}</Text>
+                  <Text className="text-sm text-foreground font-medium">
+                    {item.label}
+                  </Text>
                   <View className="flex items-center gap-3">
                     <Text className="text-sm text-muted-foreground">
-                      {item.before}{item.unit}
+                      {item.before}
+                      {item.unit}
                     </Text>
                     <Text className="text-xs text-muted-foreground">→</Text>
-                    <Text className="text-sm font-bold" style={{ color: DEEP_PLUM }}>
-                      {item.after}{item.unit}
+                    <Text
+                      className="text-sm font-bold"
+                      style={{ color: DEEP_PLUM }}
+                    >
+                      {item.after}
+                      {item.unit}
                     </Text>
                   </View>
                 </View>
-                {i < 3 && <Separator style={{ backgroundColor: '#F0EDF2' }} />}
+                {i < compareItems.length - 1 && (
+                  <Separator style={{ backgroundColor: '#F0EDF2' }} />
+                )}
               </View>
             ))}
           </CardContent>
@@ -213,7 +272,10 @@ const ComparePage = () => {
               <CardContent className="p-4">
                 <View className="flex gap-2 mb-3">
                   <View className="flex-1 h-12 rounded-xl bg-secondary" />
-                  <View className="flex-1 h-12 rounded-xl" style={{ backgroundColor: 'rgba(154, 140, 152, 0.1)' }} />
+                  <View
+                    className="flex-1 h-12 rounded-xl"
+                    style={{ backgroundColor: 'rgba(154, 140, 152, 0.1)' }}
+                  />
                 </View>
                 <Text className="block text-xs text-foreground font-medium">
                   {label}
