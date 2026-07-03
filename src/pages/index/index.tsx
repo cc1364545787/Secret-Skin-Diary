@@ -80,33 +80,38 @@ const IndexPage = () => {
   return (
     <View className="min-h-screen bg-background">
       {/* 顶部状态栏 - 深紫渐变 */}
-      <View className="px-6 pt-8 pb-8 rounded-b-3xl" style={{ background: 'linear-gradient(135deg, rgb(78, 18, 98) 0%, rgb(210, 170, 204) 100%)' }}>
+      <View className="px-6 pt-8 pb-8 rounded-b-3xl" style={{ background: 'linear-gradient(135deg, rgb(78, 18, 98) 0%, rgb(138, 118, 142) 100%)' }}>
         <View className="flex items-center gap-2 mb-3">
           <Sparkles size={18} color="#FFFFFF" />
-          <Text className="block text-primary-foreground text-sm font-medium opacity-90">
+          <Text className="block text-white text-sm font-medium opacity-90">
             护肤日志
           </Text>
         </View>
-        <Text className="block text-primary-foreground text-2xl font-semibold mb-1">
+        <Text className="block text-white text-2xl font-semibold mb-1">
           这是你「{projectName}」
         </Text>
-        <Text className="block text-primary-foreground text-2xl font-semibold">
+        <Text className="block text-white text-2xl font-semibold">
           术后的第 <Text className="font-bold" style={{ fontSize: '28px' }}>{daysAfterProcedure}</Text> 天
         </Text>
-        <View className="mt-5 bg-white bg-opacity-15 rounded-2xl p-4">
+        
+        {/* 🔴 修复后的进度条区域：改用显式且兼容性更强的 rgba 声明 */}
+        <View className="mt-5 rounded-2xl p-4" style={{ backgroundColor: 'rgba(255, 255, 255, 0.12)' }}>
           <View className="flex items-center justify-between mb-2">
-            <Text className="block text-primary-foreground text-xs opacity-80">
+            <Text className="block text-white text-xs opacity-90">
               今日进度
             </Text>
-            <Text className="block text-primary-foreground text-xs font-medium">
+            <Text className="block text-white text-xs font-semibold">
               {completedCount}/{tasks.length}
             </Text>
           </View>
-          <View className="w-full h-2 bg-white bg-opacity-15 rounded-full overflow-hidden">
+          {/* 进度条轨道背景设为半透明白 */}
+          <View className="w-full h-2 rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }}>
+            {/* 高亮进度填充 */}
             <View
-              className="h-full bg-white rounded-full"
+              className="h-full rounded-full"
               style={{
                 width: `${progressPercent}%`,
+                backgroundColor: '#FFFFFF',
                 transition: 'width 0.3s ease-out'
               }}
             />
