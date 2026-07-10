@@ -14,9 +14,7 @@ interface AngleInfo {
 }
 
 const ANGLES: AngleInfo[] = [
-  { key: 'front', label: '正脸', desc: '正面平视镜头' },
-  { key: 'left', label: '左侧45°', desc: '头部左转45度' },
-  { key: 'right', label: '右侧45°', desc: '头部右转45度' }
+  { key: 'front', label: '正脸素颜', desc: '正面平视镜头' },
 ]
 
 const isMiniApp = [Taro.ENV_TYPE.WEAPP, Taro.ENV_TYPE.TT].includes(Taro.getEnv() as any)
@@ -252,21 +250,22 @@ const CameraPage = () => {
         <View className="flex gap-4">
           <Button
             variant="outline"
-            className="flex-1 rounded-full border-secondary text-foreground py-5"
+            className="flex-1 rounded-full border-secondary text-primary-foreground py-5"
             onClick={handleCapture}
+            style={{ backgroundColor: DEEP_PLUM }}
             disabled={isCapturing}
           >
-            <RefreshCw size={16} color={MUTED_PURPLE} className="mr-2" />
+            <CircleCheck size={16} color="#FFFFFF" className="mr-2" />
             <Text>{isCapturing ? '拍摄中...' : '拍照'}</Text>
           </Button>
-          <Button
+          {/* <Button
             className="flex-1 rounded-full text-primary-foreground py-5"
             style={{ backgroundColor: DEEP_PLUM }}
             onClick={handleComplete}
           >
             <CircleCheck size={16} color="#FFFFFF" className="mr-2" />
-            <Text>完成打卡</Text>
-          </Button>
+            <Text>拍照</Text>
+          </Button> */}
         </View>
       </View>
     </View>

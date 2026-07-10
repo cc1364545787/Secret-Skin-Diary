@@ -67,7 +67,7 @@ const IndexPage = () => {
     [config.tasks, completedSet],
   )
 
-  const daysAfterProcedure = 3
+  const daysAfterProcedure = 1
 
   const toggleTask = (id: string) => {
     setCompletedSet((prev) => {

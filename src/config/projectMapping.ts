@@ -59,6 +59,7 @@ const SOFT_ROSE = '#C4A0A0'
 
 export const PRESET_PROJECTS = [
   '日常护肤',
+  '内服调理',
   '亮肤美白',
   '抗炎修复',
   '水光针',
@@ -70,7 +71,7 @@ export const PRESET_PROJECTS = [
   '超皮秒',
 ] as const
 
-export const DEFAULT_PROJECT = '超光子'
+export const DEFAULT_PROJECT = '日常护肤'
 
 // ─── 项目映射字典 ────────────────────────────────────────────
 
@@ -212,7 +213,8 @@ export const PROJECT_MAP: Record<string, SkinProjectConfig> = {
     category: 'daily',
     categoryLabel: '日常保养',
     tasks: [
-      { title: '温和洁面', desc: '氨基酸洁面乳，水温不超过 37°C', icon: 'droplets' },
+      { title: '皮肤检测', desc: '正脸素颜自拍', icon: 'camera' },
+      // { title: '温和洁面', desc: '氨基酸洁面乳，水温不超过 37°C', icon: 'droplets' },
       { title: '保湿补水', desc: '精华 + 面霜锁水', icon: 'heart' },
       { title: '防晒保护', desc: 'SPF30+ 日常防晒', icon: 'sun' },
     ],
@@ -309,7 +311,7 @@ export function getProjectConfig(name: string): SkinProjectConfig {
       category: 'custom' as ProjectCategory,
       categoryLabel: '自定义',
       tasks: [
-        { title: '拍摄今日皮肤照片', desc: '正脸 + 左右 45° 各一张', icon: 'camera' },
+        { title: '皮肤检测', desc: '正脸素颜自拍', icon: 'camera' },
         { title: '基础保湿补水', desc: '使用温和保湿产品', icon: 'droplets' },
         { title: '严格防晒', desc: 'SPF50+ 防晒霜', icon: 'sun' },
       ],
